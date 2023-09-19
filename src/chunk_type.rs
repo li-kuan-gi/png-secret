@@ -38,13 +38,13 @@ impl ChunkType {
 }
 
 impl TryFrom<[u8; 4]> for ChunkType {
-    type Error = &'static str;
+    type Error = String;
 
     fn try_from(bytes: [u8; 4]) -> Result<Self, Self::Error> {
         if bytes.into_iter().all(ChunkType::is_letter) {
             Ok(Self { bytes })
         } else {
-            Err("should be all letters !!")
+            Err("should be all letters !!".to_string())
         }
     }
 }
