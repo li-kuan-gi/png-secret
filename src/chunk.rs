@@ -45,6 +45,16 @@ impl Chunk {
     pub fn data_as_string(&self) -> Result<String> {
         Ok(String::from_utf8(self.data.to_owned())?)
     }
+
+    pub fn as_bytes(&self) -> Vec<u8> {
+        self.data_length
+            .to_be_bytes()
+            .into_iter()
+            .chain(self.chunk_type().bytes())
+            .chain(self.data().to_owned())
+            .chain(self.crc().to_be_bytes())
+            .collect()
+    }
 }
 
 impl TryFrom<&[u8]> for Chunk {

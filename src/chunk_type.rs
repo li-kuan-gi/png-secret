@@ -11,7 +11,7 @@ impl ChunkType {
     }
 
     fn is_letter(b: u8) -> bool {
-        (b > 65 && b < 90) || (b > 97 && b < 122)
+        (b >= 65 && b <= 90) || (b >= 97 && b <= 122)
     }
 
     pub fn is_critical(&self) -> bool {
