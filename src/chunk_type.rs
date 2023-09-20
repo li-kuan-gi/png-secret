@@ -1,3 +1,5 @@
+use crate::result::*;
+
 #[derive(Debug, PartialEq)]
 pub struct ChunkType {
     bytes: [u8; 4],
@@ -38,28 +40,28 @@ impl ChunkType {
 }
 
 impl TryFrom<[u8; 4]> for ChunkType {
-    type Error = String;
+    type Error = Error;
 
-    fn try_from(bytes: [u8; 4]) -> Result<Self, Self::Error> {
+    fn try_from(bytes: [u8; 4]) -> Result<Self> {
         if bytes.into_iter().all(ChunkType::is_letter) {
             Ok(Self { bytes })
         } else {
-            Err("should be all letters !!".to_string())
+            Err("should be all letters !!")?
         }
     }
 }
 
 impl std::str::FromStr for ChunkType {
-    type Err = &'static str;
+    type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> Result<Self> {
         let length = s.as_bytes().len();
 
         if length == 4 && s.bytes().all(ChunkType::is_letter) {
             let bytes = s.as_bytes().to_owned().try_into().unwrap();
             Ok(Self { bytes })
         } else {
-            Err("Should consist of 4 letters !!")
+            Err("Should consist of 4 letters !!")?
         }
     }
 }

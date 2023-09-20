@@ -1,4 +1,5 @@
-use crate::chunk_type::ChunkType;
+use super::chunk_type::ChunkType;
+use crate::result::*;
 
 pub struct Chunk {
     data_length: u32,
@@ -41,19 +42,19 @@ impl Chunk {
         self.crc
     }
 
-    pub fn data_as_string(&self) -> Result<String, Box<dyn std::error::Error>> {
+    pub fn data_as_string(&self) -> Result<String> {
         Ok(String::from_utf8(self.data.to_owned())?)
     }
 }
 
 impl TryFrom<&[u8]> for Chunk {
-    type Error = String;
+    type Error = Error;
 
-    fn try_from(bytes: &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(bytes: &[u8]) -> Result<Self> {
         let length = bytes.len();
 
         if length < 12 {
-            return Err("cannot less than 12 bytes".to_string());
+            Err("cannot less than 12 bytes")?
         }
 
         let data_length: [u8; 4] = bytes[..4].to_owned().try_into().unwrap();
@@ -63,13 +64,13 @@ impl TryFrom<&[u8]> for Chunk {
         let chunk_type = ChunkType::try_from(chunk_type)?;
 
         if !chunk_type.is_valid() {
-            return Err("invalid chunk type".to_string());
+            Err("invalid chunk type")?
         }
 
         let data = bytes[8..length - 4].to_owned();
 
         if usize::try_from(data_length).unwrap() != data.len() {
-            return Err("wrong data length".to_string());
+            Err("wrong data length")?
         }
 
         let crc: [u8; 4] = bytes[length - 4..length].to_owned().try_into().unwrap();
@@ -79,7 +80,7 @@ impl TryFrom<&[u8]> for Chunk {
         let computed_crc = iso_crc.checksum(&bytes[4..length - 4]);
 
         if crc != computed_crc {
-            return Err("crc is wrong".to_string());
+            Err("crc is wrong")?
         }
 
         Ok(Self {
@@ -109,6 +110,7 @@ mod tests {
     use std::str::FromStr;
 
     use crate::chunk_type::ChunkType;
+    use crate::result::Result;
 
     use super::Chunk;
 
@@ -117,7 +119,7 @@ mod tests {
         chunk_type: &[u8],
         chunk_data: &[u8],
         crc: u32,
-    ) -> Result<Chunk, String> {
+    ) -> Result<Chunk> {
         let chunk_bytes: Vec<u8> = data_length
             .to_be_bytes()
             .iter()

@@ -1,8 +1,4 @@
-mod chunk_type;
-mod chunk;
-
-type Error = Box<dyn std::error::Error>;
-type Result<T> = core::result::Result<T, Error>;
+use pngsecret::result::Result;
 
 fn main() -> Result<()> {
     todo!()
