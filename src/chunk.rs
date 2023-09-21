@@ -104,12 +104,22 @@ impl TryFrom<&[u8]> for Chunk {
 
 impl std::fmt::Display for Chunk {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let suffix = if self.data().len() > 5 { "..." } else { "" };
+        let data = self
+            .data()
+            .into_iter()
+            .take(5)
+            .map(|b| format!("0x{:02x}", b))
+            .chain(std::iter::once(suffix.to_string()))
+            .collect::<Vec<String>>()
+            .join(" ");
+
         write!(
             f,
-            "length: {}\ntype: {}\ndata: {:#?}ncrc: {}",
+            "Chunk:\n\tlength: {}\n\ttype: {}\n\tdata: {} \n\tcrc: {}",
             self.data_length,
             self.chunk_type.to_string(),
-            self.data,
+            data,
             self.crc
         )
     }
