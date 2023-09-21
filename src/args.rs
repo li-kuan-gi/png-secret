@@ -12,7 +12,7 @@ pub enum Commands {
         file_path: String,
         chunk_type: String,
         message: String,
-        output_file: Option<String>,
+        output_file: String,
     },
     Decode {
         file_path: String,
@@ -21,6 +21,7 @@ pub enum Commands {
     Remove {
         file_path: String,
         chunk_type: String,
+        output_file: String,
     },
     Print {
         file_path: String,

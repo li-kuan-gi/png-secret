@@ -1,42 +1,34 @@
 use args::{Args, Commands};
 use clap::Parser;
+use commands::{decode, encode, print, remove};
 use pngsecret::result::Result;
 
 mod args;
+mod commands;
 
 fn main() -> Result<()> {
     let args = Args::parse();
 
-    match &args.command {
+    match args.command {
         Commands::Encode {
             file_path,
             chunk_type,
             message,
             output_file,
-        } => {
-            let default = "default".to_string();
-            let output_file = output_file.as_ref().unwrap_or(&default);
-            let s = format!(
-                "cmd: {}, path: {}, type: {}, msg: {}, output: {}",
-                "encode", file_path, chunk_type, message, output_file
-            );
-            println!("{}", s);
-        }
+        } => encode(file_path, chunk_type, message, output_file)?,
+
         Commands::Decode {
             file_path,
             chunk_type,
-        } => println!(
-            "cmd: {}, path: {}, type: {}",
-            "decode", file_path, chunk_type
-        ),
+        } => decode(file_path, chunk_type)?,
+
         Commands::Remove {
             file_path,
             chunk_type,
-        } => println!(
-            "cmd: {}, path: {}, type: {}",
-            "remove", file_path, chunk_type
-        ),
-        Commands::Print { file_path } => println!("cmd: {}, path: {}", "print", file_path),
+            output_file,
+        } => remove(file_path, chunk_type, output_file)?,
+
+        Commands::Print { file_path } => print(file_path)?,
     }
     Ok(())
 }
