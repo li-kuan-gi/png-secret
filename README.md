@@ -23,7 +23,7 @@ cargo install --git https://github.com/li-kuan-gi/png-secret
 
 One can reference the help page to see the usages.
 ```bash
-png-secret -h
+pngsecret -h
 ```
 
 ## Example
@@ -31,25 +31,25 @@ png-secret -h
 - Add a message in some chunk (e.g. `ruSt` chunk)
 
 ```bash
-png-secret encode <path/to/input.png> ruSt <message> <path/to/output.png>
+pngsecret encode <path/to/input.png> ruSt <message> <path/to/output.png>
 ```
 
 - Show message in some chunk (e.g. `ruSt` chunk)
 
 ```bash
-png-secret decode <path/to/file.png> ruSt
+pngsecret decode <path/to/file.png> ruSt
 ```
 
 - Remove some chunk (e.g. `ruSt` chunk)
 
 ```bash
-png-secret remove <path/to/input.png> ruSt <path/to/output.png>
+pngsecret remove <path/to/input.png> ruSt <path/to/output.png>
 ```
 
 - Show all chunks in png file
 
 ```bash
-png-secret print <path/to/file.png>
+pngsecret print <path/to/file.png>
 ```
 
 For valid chunk names, one can reference [the png file spec](http://www.libpng.org/pub/png/spec/1.2/PNG-Structure.html#Chunk-naming-conventions)
