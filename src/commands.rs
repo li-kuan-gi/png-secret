@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use pngsecret::{chunk::Chunk, chunk_type::ChunkType, png::Png, result::Result};
+use pngsecret::{Chunk, ChunkType, Png, Result};
 
 pub fn encode(
     file_path: String,

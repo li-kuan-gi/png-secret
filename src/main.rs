@@ -1,10 +1,12 @@
-use args::{Args, Commands};
-use clap::Parser;
-use commands::{decode, encode, print, remove};
-use pngsecret::result::Result;
-
 mod args;
 mod commands;
+
+use clap::Parser;
+
+use pngsecret::Result;
+
+use args::{Args, Commands};
+use commands::{decode, encode, print, remove};
 
 fn main() -> Result<()> {
     let args = Args::parse();

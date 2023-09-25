@@ -1,4 +1,9 @@
-pub mod chunk;
-pub mod chunk_type;
-pub mod result;
-pub mod png;
+mod chunk;
+mod chunk_type;
+mod png;
+mod result;
+
+pub use chunk::*;
+pub use chunk_type::*;
+pub use png::*;
+pub use result::*;
